@@ -1,4 +1,4 @@
-import machine, display, mpr121, eink, consts, time, neopixel
+import machine, display, eink, consts, time, neopixel
 
 deviceType = consts.INFO_HARDWARE_NAME
 
@@ -77,7 +77,7 @@ def png(x,y,arg):
 	return display.drawPng(x,y,arg)
 
 def setPower(state):
-	mpr121.set(10, state)
+	pass
 
 def usb_volt_sense():
 	return int(_vusb.read()*3.1436) # Determined by measuring the relevant voltage using a shitty multimeter :-)
@@ -96,6 +96,4 @@ def vibrator_init():
 	pass
 
 def vibrator_activate(duration):
-	mpr121.set(8,1)
-	time.sleep_ms(duration*10)
-	mpr121.set(8,0)
+	pass

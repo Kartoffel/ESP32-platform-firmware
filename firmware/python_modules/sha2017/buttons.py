@@ -1,7 +1,7 @@
 # SHA2017, Hackerhotel 2019 and Disobey 2020 button input wrapper
 # Versions of this file tailored for other badges should expose the same API
 
-import mpr121, _buttons, _mpr121mapping, system, machine
+import _buttons, _mpr121mapping, system, machine
 
 # --- BUTTON CONSTANTS  ---
 BTN_A      = 0
@@ -25,81 +25,12 @@ def __cbReboot(pressed):
     if pressed:
         system.launcher()
 
-def __cb_btn_a(arg):
-    if __cb[-1][BTN_A]:
-        __cb[-1][BTN_A](arg)
-
-def __cb_btn_b(arg):
-    if __cb[-1][BTN_B]:
-        __cb[-1][BTN_B](arg)
-
-def __cb_btn_start(arg):
-    if __cb[-1][BTN_START]:
-        __cb[-1][BTN_START](arg)
-
-def __cb_btn_select(arg):
-    if __cb[-1][BTN_SELECT]:
-        __cb[-1][BTN_SELECT](arg)
-
-def __cb_btn_down(arg):
-    btn = BTN_DOWN
-    if __orientation == 90:
-        btn = BTN_LEFT
-    elif __orientation == 180:
-        btn = BTN_UP
-    elif __orientation == 270:
-        btn = BTN_RIGHT
-    if __cb[-1][btn]:
-        __cb[-1][btn](arg)
-
-def __cb_btn_right(arg):
-    btn = BTN_RIGHT
-    if __orientation == 90:
-        btn = BTN_DOWN
-    elif __orientation == 180:
-        btn = BTN_LEFT
-    elif __orientation == 270:
-        btn = BTN_UP
-    if __cb[-1][btn]:
-        __cb[-1][btn](arg)
-
-def __cb_btn_up(arg):
-    btn = BTN_UP
-    if __orientation == 90:
-        btn = BTN_RIGHT
-    elif __orientation == 180:
-        btn = BTN_DOWN
-    elif __orientation == 270:
-        btn = BTN_LEFT
-    if __cb[-1][btn]:
-        __cb[-1][btn](arg)
-
-
-def __cb_btn_left(arg):
-    btn = BTN_LEFT
-    if __orientation == 90:
-        btn = BTN_UP
-    elif __orientation == 180:
-        btn = BTN_RIGHT
-    elif __orientation == 270:
-        btn = BTN_DOWN
-    if __cb[-1][btn]:
-        __cb[-1][btn](arg)
-
 def __cb_btn_flash(arg):
     if __cb[-1][BTN_FLASH]:
         __cb[-1][BTN_FLASH](arg)
 
 def __init():
     _buttons.register( 0,                    __cb_btn_flash  ) # The flash button is connected to the badge on GPIO 0
-    mpr121.attach    ( __mprMap[BTN_A],      __cb_btn_a      ) # The A button is connected to input 0 of the MPR121
-    mpr121.attach    ( __mprMap[BTN_B],      __cb_btn_b      ) # The B button is connected to input 1 of the MPR121
-    mpr121.attach    ( __mprMap[BTN_START],  __cb_btn_start  ) # The START button is connected to input 2 of the MPR121
-    mpr121.attach    ( __mprMap[BTN_SELECT], __cb_btn_select ) # The SELECT button is connected to input 3 of the MPR121
-    mpr121.attach    ( __mprMap[BTN_DOWN],   __cb_btn_down   ) # The DOWN button is connected to input 4 of the MPR121
-    mpr121.attach    ( __mprMap[BTN_RIGHT],  __cb_btn_right  ) # The RIGHT button is connected to input 5 of the MPR121
-    mpr121.attach    ( __mprMap[BTN_UP],     __cb_btn_up     ) # The UP button is connected to input 6 of the MPR121
-    mpr121.attach    ( __mprMap[BTN_LEFT],   __cb_btn_left   ) # The LEFT button is connected to input 7 of the MPR121
     pushMapping()                                              # Add the initial / default mapping
     
 # Public functions
@@ -132,7 +63,7 @@ def value(button):
     if button == BTN_FLASH:
         return not _buttons.pin(0).value() # This input has is active LOW
     else:
-        return mpr121.get(__mprMap[button])
+        return False # Hardcoded no-press
 
 def getCallback(button):
     '''
