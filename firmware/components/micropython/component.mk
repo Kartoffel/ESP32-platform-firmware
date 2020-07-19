@@ -116,6 +116,7 @@ MP_EXTRA_INC += -I$(PROJECT_PATH)/components/driver_display_eink/include
 MP_EXTRA_INC += -I$(PROJECT_PATH)/components/driver_display_st7735/include
 MP_EXTRA_INC += -I$(PROJECT_PATH)/components/driver_display_st7789v/include
 MP_EXTRA_INC += -I$(PROJECT_PATH)/components/driver_display_ledmatrix/include
+MP_EXTRA_INC += -I$(PROJECT_PATH)/components/driver_display_generic_i2c/include
 MP_EXTRA_INC += -I$(PROJECT_PATH)/components/driver_io_disobey_samd/include
 MP_EXTRA_INC += -I$(PROJECT_PATH)/components/driver_sndmixer
 MP_EXTRA_INC += -I$(PROJECT_PATH)/components/driver_microphone/include
@@ -124,6 +125,7 @@ MP_EXTRA_INC += -I$(PROJECT_PATH)/components/driver_sdcard/include
 MP_EXTRA_INC += -I$(PROJECT_PATH)/components/driver_rtcmem/include
 MP_EXTRA_INC += -I$(PROJECT_PATH)/components/driver_radio_lora/include
 MP_EXTRA_INC += -I$(PROJECT_PATH)/components/driver_io_pca9555/include
+MP_EXTRA_INC += -I$(PROJECT_PATH)/components/driver_io_touchbuttons/include
 MP_EXTRA_INC += -I$(PROJECT_PATH)/components/libopus/include
 MP_EXTRA_INC += -I$(PROJECT_PATH)/components/png
 MP_EXTRA_INC += -I$(IDF_PATH)/components/esp_ringbuf/include
@@ -228,6 +230,10 @@ endif
 
 ifdef CONFIG_DRIVER_HUB75_ENABLE
 SRC_C += esp32/modhub75.c
+endif
+
+ifdef CONFIG_DRIVER_IO_TOUCHBUTTONS_ENABLE
+SRC_C += esp32/modtouchbuttons.c
 endif
 
 ifdef CONFIG_MICROPY_USE_DISPLAY

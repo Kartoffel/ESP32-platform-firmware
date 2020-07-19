@@ -1,8 +1,7 @@
 /* This file specifies the framebuffer configuration for the displays that are supported. */
 /* The order in this file determines priority if multiple drivers are enabled */
 
-#ifndef _DRIVER_FRAMEBUFFER_DEVICES_H_
-#define _DRIVER_FRAMEBUFFER_DEVICES_H_
+#pragma once
 
 #ifdef CONFIG_DRIVER_FRAMEBUFFER_ENABLE
 
@@ -11,6 +10,7 @@
 #include "driver_eink.h"
 #include "driver_ili9341.h"
 #include "driver_hub75.h"
+#include "driver_i2c_display.h"
 #include "driver_gxgde0213b1.h"
 #include "driver_fri3d.h"
 #include "driver_flipdotter.h"
@@ -34,8 +34,8 @@
 		#define FB_ALPHA_ENABLED
 		#define FB_FLUSH_GS(buffer,eink_flags) driver_eink_display_greyscale(buffer,eink_flags,16);
 	#endif
-	#define FB_FLUSH(buffer,eink_flags,x0,y0,x1,y1) driver_eink_display(buffer,eink_flags);
-	//#define FB_FLUSH(buffer,eink_flags,x0,y0,x1,y1) driver_eink_display_part(buffer,eink_flags,x0,x1); //Doesn't work.
+	//#define FB_FLUSH(buffer,eink_flags,x0,y0,x1,y1) driver_eink_display(buffer,eink_flags);
+	#define FB_FLUSH(buffer,eink_flags,x0,y0,x1,y1) driver_eink_display_part(buffer,eink_flags,x0,x1);
 	#define COLOR_FILL_DEFAULT 0xFFFFFF
 	#define COLOR_TEXT_DEFAULT 0x000000
 
@@ -119,6 +119,7 @@
 	
 /* HUB75 led matrix */
 #elif defined(CONFIG_DRIVER_HUB75_ENABLE)
+    #define CONFIG_DRIVER_FRAMEBUFFER_DOUBLE_BUFFERED
 	#define FB_SIZE HUB75_BUFFER_SIZE
 	#define FB_WIDTH HUB75_WIDTH
 	#define FB_HEIGHT HUB75_HEIGHT
@@ -140,6 +141,7 @@
 
 /* Otter flipdot matrix */
 #elif CONFIG_DRIVER_FLIPDOTTER_ENABLE
+    #define CONFIG_DRIVER_FRAMEBUFFER_DOUBLE_BUFFERED
 	#define FB_SIZE FLIPDOTTER_BUFFER_SIZE
 	#define FB_WIDTH FLIPDOTTER_WIDTH
 	#define FB_HEIGHT FLIPDOTTER_HEIGHT
@@ -169,6 +171,16 @@
 	#define FB_FLUSH(buffer,eink_flags,x0,y0,x1,y1) driver_ledmatrix_set_buffer(buffer);
 	#define COLOR_FILL_DEFAULT 0x000000
 	#define COLOR_TEXT_DEFAULT 0xFFFFFF
+
+/* Generic i2c display*/
+#elif defined(CONFIG_DRIVER_DISPLAY_I2C_ENABLE)
+	#define FB_SIZE I2C_DISPLAY_BUFFER_SIZE
+	#define FB_WIDTH I2C_DISPLAY_WIDTH
+	#define FB_HEIGHT I2C_DISPLAY_HEIGHT
+	#define FB_TYPE_24BPP
+	#define FB_FLUSH(buffer,eink_flags,x0,y0,x1,y1) driver_i2c_display_write(buffer);
+	#define COLOR_FILL_DEFAULT 0x000000
+	#define COLOR_TEXT_DEFAULT 0xFFFFFF
 #else
 	#error "Framebuffer driver enabled without a target display available!"
 #endif
@@ -190,5 +202,3 @@
 #endif
 
 #endif
-
-#endif //_DRIVER_FRAMEBUFFER_DEVICES_H_
